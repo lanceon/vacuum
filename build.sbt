@@ -1,6 +1,6 @@
 organization := "org.yourorganization"
 
-name := "Automatic vacuum cleaner"
+name := "Vacuum cleaner robot sim"
 
 version := "0.1"
 

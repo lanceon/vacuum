@@ -1,8 +1,8 @@
-scala-sbt-blank-project
-=======================
+vacuum cleaner robot sim
+========================
 
-scala 2.11.1
+scala 2.11.4
 
-sbt 0.13.5
+sbt 0.13.6
 
-logger
+reactive
