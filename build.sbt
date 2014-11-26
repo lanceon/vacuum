@@ -1,12 +1,29 @@
 organization := "org.yourorganization"
 
-name := "scala sbt project"
+name := "Automatic vacuum cleaner"
 
-version := "0.1-SNAPSHOT"
+version := "0.1"
 
-scalaVersion := "2.11.1"
+scalaVersion := "2.11.4"
 
 scalacOptions ++= Seq("-deprecation", "-unchecked")
+
+artifactName := { (sv: ScalaVersion, module: ModuleID, artifact: Artifact) =>
+  artifact.name + "-" + module.revision + "." + artifact.extension
+}
+
+initialize ~= { _ => sys.props("scalac.patmat.analysisBudget") = "off" }
+
+scalacOptions ++= Seq(
+  "-deprecation",
+  "-unchecked",
+  "-target:jvm-1.7",
+  "-feature",
+  "-language:postfixOps"
+  // "-optimise" , "-verbose", "-language:reflectiveCalls", "-language:higherKinds" "-language:implicitConversions", "-language:existentials"
+)
+
+javacOptions ++= Seq("-g:source,lines,vars", "-source", "1.7", "-target", "1.7")
 
 libraryDependencies ++= {
   Seq(
@@ -16,3 +33,5 @@ libraryDependencies ++= {
     "org.scalaz" % "scalaz-core_2.10" % "7.1.0"
   )
 }
+
+addCommandAlias("cc", "compile")
