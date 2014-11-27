@@ -1,0 +1,9 @@
+Goals:
+- implement score calculation
+- implement injectable movement strategy with memory
+- implement an easy way to create new robots
+- implement UI to visualize movements
+- use immutable states instead of vars
+- support multiple robots in one field
+- read field configuration from external resource
+

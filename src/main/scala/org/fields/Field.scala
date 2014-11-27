@@ -1,6 +1,6 @@
 package org.fields
 
-import org.Pos
+import org.{Move, Pos}
 import org.util.Loggable
 import scalaz._
 import Scalaz._
@@ -8,6 +8,8 @@ import Scalaz._
 trait Field {
   def width: Int
   def height: Int
+  def allowedMoves: List[Move]
+  def availableMoves(p: Pos): List[Move]
   def contains(p: Pos): Boolean
   def hasWall(p: Pos): Boolean = false
 }
