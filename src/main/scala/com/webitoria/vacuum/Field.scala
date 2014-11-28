@@ -1,9 +1,7 @@
-package org.fields
+package com.webitoria.vacuum
 
-import org.{Move, Pos}
-import org.util.Loggable
-import scalaz._
-import Scalaz._
+import com.webitoria.util.Loggable
+import scalaz.Scalaz._
 
 trait Field {
   def width: Int

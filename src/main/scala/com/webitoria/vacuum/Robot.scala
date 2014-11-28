@@ -1,8 +1,6 @@
-package org.robots
+package com.webitoria.vacuum
 
-import org.{Move, Pos}
-import org.fields.Field
-import org.util.Loggable
+import com.webitoria.util.Loggable
 
 import scala.util.Random
 
@@ -37,11 +35,11 @@ class Robot(name: String,
    */
   def move: Option[Move] = {
     field.availableMoves(pos) match {
+      case Nil =>
+        None
       case list =>
         val move = list(Random.nextInt(list.length))
         Some(move)
-      case Nil =>
-        None
     }
 
   }

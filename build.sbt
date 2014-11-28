@@ -1,4 +1,4 @@
-organization := "org.yourorganization"
+organization := "com.webitoria"
 
 name := "Vacuum cleaner robot sim"
 

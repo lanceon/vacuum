@@ -1,4 +1,4 @@
-package org.util
+package com.webitoria.util
 
 import org.slf4j.LoggerFactory
 

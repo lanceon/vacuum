@@ -1,7 +1,6 @@
-package org.fields
+package com.webitoria.vacuum
 
-import org._
-import org.util.Loggable
+import com.webitoria.util.Loggable
 
 /**
  * Created by Alexey.Zavalin on 26.11.2014.
