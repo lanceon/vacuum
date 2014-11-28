@@ -29,9 +29,21 @@ libraryDependencies ++= {
   Seq(
     "org.scala-lang.modules" %% "scala-xml" % "1.0.2",
     "org.scala-lang.modules" %% "scala-parser-combinators" % "1.0.2",
-    "ch.qos.logback" % "logback-classic" % "1.1.2",
     "org.scalaz" % "scalaz-core_2.10" % "7.1.0"
   )
 }
+
+// loggers
+libraryDependencies ++= {
+  Seq(
+    "ch.qos.logback"   % "logback-classic"    % "1.1.2",
+    "org.slf4j"        % "slf4j-api"          % "1.7.7"
+    //"ch.qos.logback"   % "logback-classic"    % "1.1.2"
+    //"ch.qos.logback"   % "logback-classic" % "1.1.2"      % "compile->default",
+    //"ch.qos.logback"   % "logback-core"    % "1.1.2"      % "compile->default",
+    //"ch.qos.logback"   % "logback-access"  % "1.1.2"      % "compile->default"
+  )
+}
+
 
 addCommandAlias("cc", "compile")

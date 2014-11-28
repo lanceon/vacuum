@@ -1,15 +1,18 @@
 package com.webitoria.vacuum
 
 import com.webitoria.util.Loggable
-import reactive.{Observing, Timer}
+import reactive.{EventStream, Observing}
 
 /**
  * Created by Alexey.Zavalin on 28.11.2014.
  */
+
+case object Tick
+
 class Simulation(field: Field,
                 robot: Robot,
                 moveLimit: Int,
-                tickMillis: Int,
+                timer: EventStream[Tick.type],
                 startPos: Pos = Pos(0,0)) extends Loggable {
 
   case class SimState(field: Field,
@@ -18,9 +21,8 @@ class Simulation(field: Field,
                       var stopFlag: Boolean = false,
                       var moves: Int = 0)
 
-  private case object Tick
   private val state = SimState(field)
-  private val ticks = new Timer(0, tickMillis).map(_ => Tick).filter(_ => !state.stopFlag)
+  private val ticks = timer.filter(_ => !state.stopFlag)
   private implicit val observing = new Observing { }
 
   def subscribe(listener: SimState => Unit): Unit =
