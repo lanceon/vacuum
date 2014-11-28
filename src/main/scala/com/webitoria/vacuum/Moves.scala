@@ -1,10 +1,8 @@
 package com.webitoria.vacuum
 
-/**
- * Created by Alexey.Zavalin on 28.11.2014.
- */
-
-case class Pos(x: Int, y: Int)
+case class Pos(x: Int, y: Int) {
+  override def toString = s"($x,$y)"
+}
 
 trait Move {
   def newPos(p: Pos): Pos

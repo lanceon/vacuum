@@ -2,5 +2,5 @@ target/
 project/target/
 project/project/
 .idea/
-.out/
 logs/
+out

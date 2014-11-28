@@ -3,10 +3,6 @@ package com.webitoria.vacuum
 import com.webitoria.util.Loggable
 import reactive.{EventStream, Observing}
 
-/**
- * Created by Alexey.Zavalin on 28.11.2014.
- */
-
 case object Tick
 
 class Simulation(field: Field,

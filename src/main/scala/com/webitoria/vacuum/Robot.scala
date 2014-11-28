@@ -4,9 +4,6 @@ import com.webitoria.util.Loggable
 
 import scala.util.Random
 
-/**
- * Created by Alexey.Zavalin on 26.11.2014.
- */
 class Robot(name: String,
             field: Field,
             startPos: Pos) extends Loggable {
@@ -35,11 +32,11 @@ class Robot(name: String,
    */
   def move: Option[Move] = {
     field.availableMoves(pos) match {
-      case Nil =>
-        None
-      case list =>
+      case list @ x :: xs =>
         val move = list(Random.nextInt(list.length))
         Some(move)
+      case _ =>
+        None
     }
 
   }

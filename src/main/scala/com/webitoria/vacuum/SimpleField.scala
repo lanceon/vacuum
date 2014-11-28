@@ -2,9 +2,6 @@ package com.webitoria.vacuum
 
 import com.webitoria.util.Loggable
 
-/**
- * Created by Alexey.Zavalin on 26.11.2014.
- */
 class SimpleField extends RectField with Loggable {
 
   override def width = 20
