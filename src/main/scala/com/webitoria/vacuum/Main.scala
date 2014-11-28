@@ -1,6 +1,6 @@
 package com.webitoria.vacuum
 
-import com.webitoria.util.Loggable
+import com.webitoria.util.{MemoryInfo, Loggable}
 import reactive.{EventSource, Timer}
 
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -31,6 +31,7 @@ object Main extends Loggable {
 
     val sim = new Simulation(field, robot, moveLimit = 1000, timer, startPos)
     sim.subscribe(state => Field.draw(state.field, state.pos))
+    sim.subscribe(state => logger.info(MemoryInfo.get))
     sim.start()
 
     logger.info("Press Enter to exit")
