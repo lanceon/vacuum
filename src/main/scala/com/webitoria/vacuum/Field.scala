@@ -4,13 +4,21 @@ import com.webitoria.util.Loggable
 import scalaz._
 import Scalaz._
 
-trait Field {
+trait Field { // todo: should be immutable
+
   def width: Int
   def height: Int
+
   def allowedMoves: List[Move]
   def availableMoves(p: Pos): List[Move]
+
   val contains: Pos => Boolean
   def hasWall(p: Pos): Boolean = false
+  def cells = for { y <- Range(0, height); x <- Range(0, width) if contains(Pos(x, y)) } yield Pos(x, y)
+
+  def hasGarbage(p: Pos): Boolean
+  def pickGarbage(p: Pos)
+
 }
 
 trait RectField extends Field {
@@ -22,6 +30,7 @@ trait RectField extends Field {
 
 }
 
+
 object Field extends Loggable {
 
   def draw(field: Field, robotPos: Pos): String = {
@@ -30,7 +39,8 @@ object Field extends Loggable {
       x <- Range(0, field.width)
     } yield {
       val cellPos = Pos(x,y)
-      (field.contains(cellPos) ? { field.hasWall(cellPos) ? "#" | ((robotPos==cellPos) ? "+" | " ") } | " ") +
+      val cell = (field.hasGarbage(cellPos)) ? "." | " "
+      (field.contains(cellPos) ? { field.hasWall(cellPos) ? "#" | ((robotPos==cellPos) ? "+" | cell) } | " ") +
         ((x === field.width-1) ? "\n" | "")
     }).mkString
     logger.info(s"\n$fieldStr")

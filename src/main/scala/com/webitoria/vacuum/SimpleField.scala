@@ -1,12 +1,17 @@
 package com.webitoria.vacuum
 
 import com.webitoria.util.Loggable
+import scala.collection.mutable.{Set=>MSet}
 
 class SimpleField extends RectField with Loggable {
+
+  private val garbage = MSet[Pos](cells:_*)
 
   override def width = 20
   override def height = 10
   override def allowedMoves = List(MoveUp, MoveDown, MoveLeft, MoveRight)
+  override def hasGarbage(p: Pos) = garbage.contains(p)
+  override def pickGarbage(p: Pos) = garbage.remove(p)
 
   override def availableMoves(p: Pos) = {
     val moves = allowedMoves.filter{ m =>

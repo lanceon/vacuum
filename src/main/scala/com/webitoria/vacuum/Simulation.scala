@@ -36,7 +36,11 @@ class Simulation(field: Field,
       robot.onTick()
       state.moves = state.moves + 1
       state.pos = robot.getPos
-      logger.info(s"Move #${state.moves} is completed")
+      if (field.hasGarbage(state.pos)) {
+        field.pickGarbage(state.pos)
+        state.score = state.score + 1
+      }
+      logger.info(s"Move #${state.moves} is completed, score = ${state.score}")
     })
 
   }
