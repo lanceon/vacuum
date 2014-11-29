@@ -19,6 +19,8 @@ class SimpleField extends RectField with Loggable {
 
   override def hasWall(p: Pos) =
     (p.y == 4 && p.x >= 5 && p.x <= 15) ||
-    (p.y == 5 && p.x >= 5 && p.x <= 10)
+    (p.y == 5 && p.x == 15) ||
+    (p.y == 6 && p.x == 15) ||
+    (p.y == 7 && p.x >= 5 && p.x <= 15)
 
 }

@@ -1,20 +1,24 @@
 package com.webitoria.vacuum
 
 import com.webitoria.util.Loggable
-import scalaz.Scalaz._
+import scalaz._
+import Scalaz._
 
 trait Field {
   def width: Int
   def height: Int
   def allowedMoves: List[Move]
   def availableMoves(p: Pos): List[Move]
-  def contains(p: Pos): Boolean
+  val contains: Pos => Boolean
   def hasWall(p: Pos): Boolean = false
 }
 
 trait RectField extends Field {
 
-  override def contains(p: Pos): Boolean = p.x >=0 && p.x <= width-1 && p.y >=0 && p.y <= height-1
+  // memoization is not needed actually, just for scalaz fun
+  override val contains = Memo.immutableHashMapMemo{
+    (p: Pos) => (p.x >= 0 && p.x <= width - 1 && p.y >= 0 && p.y <= height - 1)
+  }
 
 }
 
@@ -26,7 +30,7 @@ object Field extends Loggable {
       x <- Range(0, field.width)
     } yield {
       val cellPos = Pos(x,y)
-      (field.contains(cellPos) ? { field.hasWall(cellPos) ? "#" | ((robotPos==cellPos) ? "+" | "o") } | " ") +
+      (field.contains(cellPos) ? { field.hasWall(cellPos) ? "#" | ((robotPos==cellPos) ? "+" | " ") } | " ") +
         ((x === field.width-1) ? "\n" | "")
     }).mkString
     logger.info(s"\n$fieldStr")

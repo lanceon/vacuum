@@ -29,7 +29,8 @@ libraryDependencies ++= {
   Seq(
     "org.scala-lang.modules" %% "scala-xml" % "1.0.2",
     "org.scala-lang.modules" %% "scala-parser-combinators" % "1.0.2",
-    "org.scalaz" % "scalaz-core_2.10" % "7.1.0"
+    "org.scalaz" % "scalaz-core_2.10" % "7.1.0",
+    "org.scalaz" % "scalaz-concurrent_2.10" % "7.1.0"
   )
 }
 

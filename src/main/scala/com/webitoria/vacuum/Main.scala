@@ -15,18 +15,21 @@ object Main extends Loggable {
     val field = new SimpleField
     val startPos = Pos(1,1)
     val robot = new Robot("Vac-1", field, startPos)
-
-    def makeTimer(tickMillis: Int) =
-      if (tickMillis==0) {
-        val st = new EventSource[Tick.type]()
-        Future { while (true) st.fire(Tick) }
-        st
+    val timer = {
+      def makeTimer(tickMillis: Int) = {
+        if (tickMillis == 0) {
+          val st = new EventSource[Tick.type]()
+          Future {
+            while (true) st.fire(Tick)
+          }
+          st
+        }
+        else new Timer(0, tickMillis).map(_ => Tick)
       }
-      else new Timer(0, tickMillis).map(_ => Tick)
-
-    val timer = args.toList match {
-      case x :: Nil => Try { Integer.parseInt(x) }.map(makeTimer).getOrElse(makeTimer(1000))
-      case _ => makeTimer(1000)
+      args.toList match {
+        case x :: Nil => Try { Integer.parseInt(x) }.map(makeTimer).getOrElse(makeTimer(1000))
+        case _ => makeTimer(1000)
+      }
     }
 
     val sim = new Simulation(field, robot, moveLimit = 1000, timer, startPos)
