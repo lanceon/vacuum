@@ -34,17 +34,29 @@ libraryDependencies ++= {
   )
 }
 
+seq(webSettings: _*)
+
+// lift, jetty
+libraryDependencies ++= {
+  val liftVersion = "2.6-RC2"
+  Seq(
+    "net.liftweb" %% "lift-webkit" % liftVersion % "compile",
+    "org.eclipse.jetty.orbit" % "javax.servlet" % "3.0.0.v201112011016" % "container,compile" artifacts Artifact("javax.servlet", "jar", "jar"),
+    "org.eclipse.jetty" % "jetty-webapp" % "9.2.2.v20140723" % "container",
+    "org.eclipse.jetty" % "jetty-plus"   % "9.2.2.v20140723" % "container"
+  )
+}
+
 // loggers
 libraryDependencies ++= {
   Seq(
     "ch.qos.logback"   % "logback-classic"    % "1.1.2",
     "org.slf4j"        % "slf4j-api"          % "1.7.7"
-    //"ch.qos.logback"   % "logback-classic"    % "1.1.2"
-    //"ch.qos.logback"   % "logback-classic" % "1.1.2"      % "compile->default",
-    //"ch.qos.logback"   % "logback-core"    % "1.1.2"      % "compile->default",
-    //"ch.qos.logback"   % "logback-access"  % "1.1.2"      % "compile->default"
   )
 }
 
+port in container.Configuration := 8080
 
 addCommandAlias("cc", "compile")
+
+addCommandAlias("cs", "container:start")
