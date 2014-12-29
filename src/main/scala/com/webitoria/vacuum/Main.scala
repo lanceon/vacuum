@@ -17,14 +17,15 @@ object Main extends Loggable {
     val robot = new Robot("Vac-1", field, startPos)
     val timer = {
       def makeTimer(tickMillis: Int) = {
-        if (tickMillis == 0) {
+        /*if (tickMillis == 0) {
           val st = new EventSource[Tick.type]()
           Future {
             while (true) st.fire(Tick)
           }
           st
         }
-        else new Timer(0, tickMillis).map(_ => Tick)
+        else*/
+        new Timer(0, tickMillis)//.map(_ => Tick)
       }
       args.toList match {
         case x :: Nil => Try { Integer.parseInt(x) }.map(makeTimer).getOrElse(makeTimer(1000))

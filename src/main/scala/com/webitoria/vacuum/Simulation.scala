@@ -8,7 +8,7 @@ case object Tick
 class Simulation(field: Field,
                 robot: Robot,
                 moveLimit: Int,
-                timer: EventStream[Tick.type],
+                timer: EventStream[Long],
                 startPos: Pos = Pos(0,0)) extends Loggable {
 
   case class SimState(field: Field,
@@ -18,7 +18,7 @@ class Simulation(field: Field,
                       var moves: Int = 0)
 
   private val state = SimState(field)
-  private val ticks = timer.filter(_ => !state.stopFlag)
+  private val ticks = timer //.filter(_ => !state.stopFlag)
   private implicit val observing = new Observing { }
 
   def subscribe(listener: SimState => Unit): Unit =
