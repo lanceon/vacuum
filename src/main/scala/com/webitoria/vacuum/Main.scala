@@ -5,7 +5,6 @@ import reactive.{EventSource, Timer}
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
-import scala.io.StdIn
 import scala.util.Try
 
 object Main extends Loggable {
@@ -39,7 +38,7 @@ object Main extends Loggable {
     sim.start()
 
     logger.info("Press Enter to exit")
-    StdIn.readLine()
+    //StdIn.readLine()
 
     sim.stop()
 

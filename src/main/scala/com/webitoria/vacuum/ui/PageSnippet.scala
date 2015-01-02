@@ -7,13 +7,13 @@ import reactive.web.lift._
 /**
  * Created by User on 28.12.2014.
  */
-trait ReactivePage extends Observing {
+trait PageSnippet extends Observing {
 
   implicit lazy val page = Page(
-    new SseTransportType(_),
-    new LiftCometTransportType(_),
     new AppendToRenderTransportType(_),
-    new SimpleAjaxTransportType(_)
+    new SimpleAjaxTransportType(_),
+    new SseTransportType(_)
+    //new LiftCometTransportType(_)
   )
 
 }

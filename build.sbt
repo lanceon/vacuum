@@ -59,4 +59,6 @@ port in container.Configuration := 8080
 
 addCommandAlias("cc", "compile")
 
-addCommandAlias("cs", "container:start")
+addCommandAlias("cs", "clean; container:start")
+
+addCommandAlias("s", "container:start")

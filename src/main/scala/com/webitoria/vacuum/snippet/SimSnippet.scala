@@ -3,16 +3,17 @@ package com.webitoria.vacuum.snippet
 import com.webitoria.util.{Loggable, MemoryInfo}
 import com.webitoria.vacuum.Field._
 import com.webitoria.vacuum._
-import com.webitoria.vacuum.ui.ReactivePage
+import com.webitoria.vacuum.ui.PageSnippet
 import net.liftweb.http.StatefulSnippet
 import net.liftweb.util.BindHelpers
-import net.liftweb.util.BindHelpers._
-import reactive.Timer
+import reactive.web.javascript.Javascript
+import reactive.{Signal, Var, Timer}
 import reactive.web._
+import reactive.web.javascript._
 
-import scala.xml.{Elem, NodeSeq}
+import scala.xml.{Text, Elem, NodeSeq}
 
-class SimSnippet extends StatefulSnippet with ReactivePage {
+class SimSnippet extends PageSnippet {
 
   val field = new SimpleField
   val startPos = Pos(1,1)
@@ -30,17 +31,20 @@ class SimSnippet extends StatefulSnippet with ReactivePage {
 
     override def render(implicit page: Page): Elem = {
       logger.info(s"cell render: $x, $y")
-      super.render
+      if (hasRobot.value) <span>X</span> else <span></span>
     }
 
   }
 
   class View(field: Field) {
 
-    private val table: Array[Array[FieldCell]] =
-      (for ( y <- Range(0, field.height) ) yield {
-        (for ( x <- Range(0, field.width) ) yield new FieldCell(x,y)).toArray
+    private val playground = {
+      val rows = (for ( y <- Range(0, field.height) ) yield {
+        val cells = (for ( x <- Range(0, field.width) ) yield new FieldCell(x,y)).toArray
+        cells
       }).toArray
+      rows
+    }
 
     def updateState(state: Simulation#SimState) = {
 
@@ -48,12 +52,12 @@ class SimSnippet extends StatefulSnippet with ReactivePage {
 
       for ( y <- Range(0, field.height);  x <- Range(0, field.width) ) {
         val cellPos = Pos(x,y)
-        val c = table(x)(y)
+        val c = playground(x)(y)
         val garbage: Boolean = state.field.hasGarbage(cellPos)
         logger.info(s"pos: $cellPos, garb = $garbage")
         c.hasGarbage.update( garbage )
         c.hasRobot.update( state.pos==cellPos )
-        //c.hasWall.update( state.field.hasWall(cellPos) )
+        c.hasWall.update( state.field.hasWall(cellPos) )
       }
 
     }
@@ -63,7 +67,7 @@ class SimSnippet extends StatefulSnippet with ReactivePage {
       {
         for (y <- Range(0, field.height)) yield {
           <tr>
-            { for {x <- Range(0, field.width)} yield <td>{ table(y)(x).render }</td> }
+            { for {x <- Range(0, field.width)} yield <td>{ playground(y)(x).render }</td> }
           </tr>
         }
       }
@@ -78,11 +82,39 @@ class SimSnippet extends StatefulSnippet with ReactivePage {
   val sim = new Simulation(field, robot, moveLimit = 1000, timer, startPos)
   sim.subscribe(state => view.updateState(state))
   sim.subscribe(state => logger.info(MemoryInfo.get))
-  sim.start()
-  //sim.stop()
 
-  override def dispatch = {
-    case "table" => "*" #> view.render
+  val curValue = Var[Long](0)
+
+  timer =>> { t =>
+    logger.info(s"timer = $t")
+    curValue.update(t)
+  }
+
+  class Button[T](name: String)(onClick: => T = Unit) extends RElem with Loggable {
+    val clickEventSource = DomEventSource.click
+    override def events = Seq(clickEventSource)
+    override def baseElem: Elem = <button type="button" class="btn btn-default">{ name }</button>
+    override def properties = Nil
+    clickEventSource =>> { _ =>
+      logger.info(s"Button [$name] clicked")
+      onClick
+    }
+  }
+  object Button {
+    def apply[T](name: String)(onClick: => T) = {
+      new Button(name)(onClick)
+    }
+  }
+
+  val btnStart = Button("Start"){ sim.start() }
+
+  val btnStop = Button("Stop"){ sim.stop() }
+
+  def render: NodeSeq => NodeSeq = {
+    import BindHelpers._
+    "data-bind=start" #> btnStart &
+    "data-bind=stop" #> btnStop &
+    "data-bind=table" #> { (ns:NodeSeq) => view.render }
   }
 
 }
