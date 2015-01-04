@@ -9,27 +9,56 @@
             .grid td {
                 text-align: center;
                 border: 1px solid #cccccc;
-                height: 3em;
-                width: 3em;
+                height: 2em;
+                width: 2em;
             }
+
+            .grid td.wall {
+                background-color: #ac2925;
+            }
+
         </style>
     </head_merge>
 
+    <div class="row" data-lift="SimSnippet">
 
-    <div class="row">
-        <div class="col-md-12">
+        <div class="col-md-7">
+            <p>
+                <span data-bind="table"></span>
+            </p>
+        </div>
 
-            <div data-lift="SimSnippet">
-                <p>
-                    <span data-bind="start"></span>
-                    <span data-bind="stop"></span>
-                </p>
-                <p>
-                    <span data-bind="table"></span>
-                </p>
-            </div>
+        <div class="col-md-5">
+
+            <p>
+                <span data-bind="start"></span>
+                <span data-bind="stop"></span>
+            </p>
+
+            <table class="table table-bordered table-condensed">
+                <tr>
+                    <td>
+                        Position:
+                    </td>
+                    <td>
+                        <span data-bind="position"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Garbage remaining:
+                    </td>
+                    <td>
+                        <span data-bind="position"></span>
+                    </td>
+                </tr>
+            </table>
 
         </div>
+
+
+
     </div>
+
 
 </div>

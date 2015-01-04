@@ -1,12 +1,9 @@
-package com.webitoria.vacuum.ui
+package com.webitoria.vacuum.reactiveui
 
 import reactive.Observing
 import reactive.web.Page
 import reactive.web.lift._
 
-/**
- * Created by User on 28.12.2014.
- */
 trait PageSnippet extends Observing {
 
   implicit lazy val page = Page(

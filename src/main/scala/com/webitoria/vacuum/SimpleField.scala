@@ -1,9 +1,10 @@
 package com.webitoria.vacuum
 
 import com.webitoria.util.Loggable
+import org.slf4j.Logger
 import scala.collection.mutable.{Set=>MSet}
 
-class SimpleField extends RectField with Loggable {
+class SimpleField(logger: Logger) extends RectField {
 
   private val garbage = MSet[Pos](cells:_*)
 

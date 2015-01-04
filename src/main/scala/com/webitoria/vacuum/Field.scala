@@ -4,7 +4,7 @@ import com.webitoria.util.Loggable
 import scalaz._
 import Scalaz._
 
-trait Field { // todo: should be immutable
+trait Field {
 
   def width: Int
   def height: Int
@@ -14,15 +14,16 @@ trait Field { // todo: should be immutable
 
   val contains: Pos => Boolean
   def hasWall(p: Pos): Boolean = false
-  def cells = for { y <- Range(0, height); x <- Range(0, width) if contains(Pos(x, y)) } yield Pos(x, y)
+  def cells = ( for { y <- Range(0, height); x <- Range(0, width) if contains(Pos(x, y)) } yield Pos(x, y) ).toList
 
   def hasGarbage(p: Pos): Boolean
-  def pickGarbage(p: Pos)
+  def pickGarbage(p: Pos): Unit
 
 }
 
 trait RectField extends Field {
 
+  // Valid positions on field are x = [0, width-1], y = [0, height-1]
   // memoization is not needed actually, just for scalaz fun
   override val contains = Memo.immutableHashMapMemo{
     (p: Pos) => (p.x >= 0 && p.x <= width - 1 && p.y >= 0 && p.y <= height - 1)

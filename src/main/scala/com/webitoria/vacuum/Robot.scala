@@ -14,7 +14,7 @@ class Robot(name: String,
   def getPos: Pos = pos
 
   def onTick() = {
-    logger.info(s"$name: handling tick")
+    logger.info(s"Robot <$name>: handling tick")
     pos = move match {
       case Some(m) =>
         val to = m.newPos(pos)

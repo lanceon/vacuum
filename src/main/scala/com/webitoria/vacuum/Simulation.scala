@@ -1,53 +1,36 @@
 package com.webitoria.vacuum
 
 import com.webitoria.util.Loggable
-import reactive.{EventStream, Observing}
+import reactive.web.DomEventSource
+import reactive.{EventSource, Var, EventStream, Observing}
 
-case object Tick
 
-class Simulation(field: Field,
-                robot: Robot,
-                moveLimit: Int,
-                timer: EventStream[Long],
-                startPos: Pos = Pos(0,0)) extends Loggable {
+case class SimState(field: Field,
+                    score: Int,
+                    pos: Pos,
+                    moves: Int)
 
-  case class SimState(field: Field,
-                      var score: Int = 0,
-                      var pos: Pos = startPos,
-                      var stopFlag: Boolean = false,
-                      var moves: Int = 0)
+object Once {
 
-  private val state = SimState(field)
-  private val ticks = timer //.filter(_ => !state.stopFlag)
-  private implicit val observing = new Observing { }
-
-  def subscribe(listener: SimState => Unit): Unit =
-    ticks += { _ => listener(state) }
-
-  def start(): Unit = {
-
-    logger.info("Starting...")
-
-    state.moves = 0
-    state.stopFlag = false
-    state.score = 0
-
-    subscribe(_ => {
-      robot.onTick()
-      state.moves = state.moves + 1
-      state.pos = robot.getPos
-      if (field.hasGarbage(state.pos)) {
-        field.pickGarbage(state.pos)
-        state.score = state.score + 1
-      }
-      logger.info(s"Move #${state.moves} is completed, score = ${state.score}")
-    })
-
+  def apply[T](event: T) = {
+    val es = new EventSource[T]()
+    es.fire(event)
+    es
   }
 
-  def stop() = {
-    logger.info("Stopping...")
-    state.stopFlag = true
+}
+
+class Simulation(field: Field,
+                 robot: Robot,
+                 moveLimit: Int,
+                 timer: EventStream[Long],
+                 startPos: Pos)(implicit val obs: Observing) extends Loggable {
+
+  val startState = SimState(field, 0, startPos, 0)
+
+  val eventStream = Once(startState) | timer.map{ time =>
+    robot.onTick()
+    SimState(field, 0, robot.getPos, 0)
   }
 
 }

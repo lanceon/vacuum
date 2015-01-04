@@ -42,8 +42,8 @@ libraryDependencies ++= {
   Seq(
     "net.liftweb" %% "lift-webkit" % liftVersion % "compile",
     "org.eclipse.jetty.orbit" % "javax.servlet" % "3.0.0.v201112011016" % "container,compile" artifacts Artifact("javax.servlet", "jar", "jar"),
-    "org.eclipse.jetty" % "jetty-webapp" % "9.2.2.v20140723" % "container",
-    "org.eclipse.jetty" % "jetty-plus"   % "9.2.2.v20140723" % "container"
+    "org.eclipse.jetty" % "jetty-webapp" % "9.2.6.v20141205" % "container",
+    "org.eclipse.jetty" % "jetty-plus"   % "9.2.6.v20141205" % "container"
   )
 }
 
@@ -51,14 +51,12 @@ libraryDependencies ++= {
 libraryDependencies ++= {
   Seq(
     "ch.qos.logback"   % "logback-classic"    % "1.1.2",
-    "org.slf4j"        % "slf4j-api"          % "1.7.7"
+    "org.slf4j"        % "slf4j-api"          % "1.7.9"
   )
 }
 
 port in container.Configuration := 8080
 
 addCommandAlias("cc", "compile")
-
-addCommandAlias("cs", "clean; container:start")
 
 addCommandAlias("s", "container:start")
