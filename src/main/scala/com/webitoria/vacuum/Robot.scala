@@ -1,25 +1,25 @@
 package com.webitoria.vacuum
 
 import com.webitoria.util.Loggable
+import org.slf4j.Logger
+import reactive.Signal
 
 import scala.util.Random
 
 class Robot(name: String,
             field: Field,
-            startPos: Pos) extends Loggable {
+            logger: Logger) {
 
-  var path: List[Pos] = Nil
-  private var pos: Pos = startPos
+  //var path: List[Pos] = Nil
 
-  def getPos: Pos = pos
-
-  def onTick() = {
+  // todo: use state monad
+  def requestMove(pos: Pos): Pos = {
     logger.info(s"Robot <$name>: handling tick")
-    pos = move match {
+    move(pos) match {
       case Some(m) =>
         val to = m.newPos(pos)
         logger.info(s"Moving $pos --> $to")
-        path = to :: path
+        //path = to :: path
         to
       case _ =>
         logger.info(s"Staying at $pos")
@@ -30,7 +30,7 @@ class Robot(name: String,
   /**
    * Suggest move to next position if movement is available
    */
-  def move: Option[Move] = {
+  protected def move(pos: Pos): Option[Move] = {
     field.availableMoves(pos) match {
       case list @ x :: xs =>
         val move = list(Random.nextInt(list.length))
@@ -41,11 +41,11 @@ class Robot(name: String,
 
   }
 
-  def onEnd() = {
+  /*def onEnd() = {
     logger.info(
       "Mission completed\n" +
       "Path:\n" + path.reverse.mkString(" --> ")
     )
-  }
+  }*/
 
 }

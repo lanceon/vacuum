@@ -1,5 +1,6 @@
 package bootstrap.liftweb
 
+import com.webitoria.vacuum.reactivehelpers.MySseTransportType
 import net.liftweb.http.{Html5Properties, LiftRules, Req}
 import net.liftweb.sitemap.{Menu, SiteMap}
 import reactive.web.lift._
@@ -20,7 +21,7 @@ class Boot {
 
     AppendToRender.init()
     SimpleAjaxTransportType.init()
-    SseTransportType.init()
+    MySseTransportType.init()
     LiftCometTransportType.init()
 
   }

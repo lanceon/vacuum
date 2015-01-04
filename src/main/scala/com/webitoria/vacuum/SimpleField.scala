@@ -9,9 +9,9 @@ class SimpleField(logger: Logger) extends RectField {
   private val garbage = MSet[Pos](cells:_*)
 
   override def width = 20
-  override def height = 10
+  override def height = 20
   override def allowedMoves = List(MoveUp, MoveDown, MoveLeft, MoveRight)
-  override def hasGarbage(p: Pos) = garbage.contains(p)
+  override def hasGarbage(p: Pos) = !hasWall(p) && garbage.contains(p)
   override def pickGarbage(p: Pos) = garbage.remove(p)
 
   override def availableMoves(p: Pos) = {
@@ -19,7 +19,7 @@ class SimpleField(logger: Logger) extends RectField {
       val newPos = m.newPos(p)
       contains(newPos) && !hasWall(newPos)
     }
-    logger.info(s"Available moves from $p are $moves")
+    logger.debug(s"Available moves from $p are $moves")
     moves
   }
 

@@ -16,7 +16,7 @@ class EmptyFieldNoGarbage(logger: Logger) extends RectField {
       val newPos = m.newPos(p)
       contains(newPos) && !hasWall(newPos)
     }
-    logger.info(s"Available moves from $p are $moves")
+    logger.debug(s"Available moves from $p are $moves")
     moves
   }
 

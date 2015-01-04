@@ -2,8 +2,6 @@ package com.webitoria.vacuum
 
 case class Pos(x: Int, y: Int) {
 
-  require( x >=0 && y >=0 )
-
   override def toString = s"($x,$y)"
 
   override def equals(obj: Any) = super.equals(obj) || (obj match {
